@@ -1,6 +1,8 @@
 # Bezier-Curve-Editor-for-osu-
 Bezier Curve Editor for osu! 
 
+![logo](https://github.com/Scatola-desu/Bezier-Curve-Editor-for-osu-/blob/main/icon.png)
+
 一个简单的曲线绘制工具，用于绘制纯白点osu!滑条
 可无限拉大窗口或缩小曲线，方便移动较远的锚点
 A simple curve drawing tool for drawing pure white dot osu! sliders
@@ -20,3 +22,5 @@ Scroll wheel to zoom/pan the curve
 
 可直接读取/导出osu!滑条格式的代码
 The code in osu! slider format can be read/exported directly
+
+![预览图](https://github.com/Scatola-desu/Bezier-Curve-Editor-for-osu-/blob/main/Interface_Preview.png)
