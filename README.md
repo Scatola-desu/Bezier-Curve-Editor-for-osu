@@ -10,7 +10,7 @@ You can infinitely enlarge the window or shrink the curve, making it convenient 
 
 **左键** - 新增尾部锚点  
 **右键** - 拖动已有锚点  
-**中键** 拖动曲线 
+**中键** 拖动曲线  
 **滚轮** - 整体缩放/平移曲线  
 **alt+左键** - 在曲线中间增加锚点（算法有些问题，如果添加位置不对请换个位置再试试）  
 **alt+右键** - 删除锚点（对空白处按住时，高亮显示最近的锚点连线）
