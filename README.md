@@ -23,4 +23,8 @@ You can infinitely enlarge the window or shrink the curve, making it convenient 
 可直接读取/导出osu!滑条格式的代码  
 The code in osu! slider format can be read/exported directly  
 
+![预览图](https://github.com/Scatola-desu/Bezier-Curve-Editor-for-osu-/blob/main/Interface_Preview2.png)
+v2.8
+
 ![预览图](https://github.com/Scatola-desu/Bezier-Curve-Editor-for-osu-/blob/main/Interface_Preview.png)
+v2.4
