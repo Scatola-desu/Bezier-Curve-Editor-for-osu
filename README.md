@@ -12,8 +12,8 @@ You can infinitely enlarge the window or shrink the curve, making it convenient 
 **右键** - 拖动已有锚点  
 **中键** - 拖动曲线  
 **滚轮** - 整体缩放/平移曲线  
-**alt+左键** - 在曲线中间增加锚点（算法有些问题，如果添加位置不对请换个位置再试试）  
-**alt+右键** - 删除锚点（对空白处按住时，高亮显示最近的锚点连线）  
+**alt+左键** - 在曲线中间增加锚点  
+**alt+右键** - 删除锚点  
 **CTRL+中键** - 同时拖动曲线和图片  
 
 注意调整**Playfirld Boundary**的大小  
@@ -24,8 +24,8 @@ You can infinitely enlarge the window or shrink the curve, making it convenient 
 **Right Click** - Drag existing anchor point  
 **Middle Click** - Drag curve  
 **Mouse Wheel** - Overall scale/pan curve  
-**Alt + Left Click** - Add anchor point in the middle of the curve (algorithm has some issues, if the addition position is incorrect, please try another position)  
-**Alt + Right Click** - Delete anchor point (when holding over an empty area, highlight the nearest anchor point connection)  
+**Alt + Left Click** - Add anchor point in the middle of the curve  
+**Alt + Right Click** - Delete anchor point  
 **CTRL + Middle Click** - Drag curve and image simultaneously  
 
 Please adjust the **Playfield Boundary** size when exporting.  
