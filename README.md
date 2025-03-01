@@ -43,6 +43,9 @@ The curve coordinates will be remapped according to the size of this box during 
 可直接读取/导出osu!滑条格式的代码  
 The code in osu! slider format can be read/exported directly  
 
+![预览图](https://github.com/Scatola-desu/Bezier-Curve-Editor-for-osu-/blob/main/images/Curve_Deformation.gif)   
+v3.0  
+
 ![预览图](https://github.com/Scatola-desu/Bezier-Curve-Editor-for-osu-/blob/main/images/v2.9.png)  
 v2.9  
 
