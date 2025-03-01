@@ -8,25 +8,33 @@ Bezier Curve Editor for osu!
 A simple curve drawing tool for drawing pure white dot osu! sliders  
 You can infinitely enlarge the window or shrink the curve, making it convenient to move distant anchor points  
 
-**左键** - 新增尾部锚点  
-**右键** - 拖动已有锚点  
-**中键** - 拖动曲线  
-**滚轮** - 整体缩放/平移曲线  
-**alt+左键** - 在曲线中间增加锚点  
-**alt+右键** - 删除锚点  
-**CTRL+中键** - 同时拖动曲线和图片  
+**左键** - 新增锚点  
+**右键** - 拖动锚点  
+**滚轮** - 缩放/平移  
+**ALT+左键** - 增加中间锚点  
+**ALT+CTRL+左键** - 增加头尾锚点  
+**ALT+右键** - 删除锚点  
+**CTRL+中键** - 拖动曲线和图片  
+**CTRL+右键** - 拖动曲线变形  
+**CTRL+S** - 快速保存  
+**CTRL+Z** - 撤销  
+**CTRL+Y** - 重做  
 
 注意调整**Playfirld Boundary**的大小  
 导出时会根据这个框的大小对曲线坐标重新映射  
 **灰色实线**是编辑器边界 **灰色虚线是**是4:3分辨率下的游戏边界  
 
-**Left Click** - Add tail anchor point  
-**Right Click** - Drag existing anchor point  
-**Middle Click** - Drag curve  
-**Mouse Wheel** - Overall scale/pan curve  
-**Alt + Left Click** - Add anchor point in the middle of the curve  
-**Alt + Right Click** - Delete anchor point  
-**CTRL + Middle Click** - Drag curve and image simultaneously  
+**Left Click:** - Add Anchor Point  
+**Right Click:** - Modify Anchor Point  
+**Mouse Wheel:** - Zoom/Pan  
+**ALT+Left Click:** - Add Mid Anchor Point  
+**ALT+CTRL+Left Click:** - Add Start/End Anchor Point  
+**ALT+Right Click:** - Delete Anchor Point  
+**CTRL+Middle Click:** - Drag Curve and Image  
+**CTRL+Right Click:** - Deform Curve  
+**CTRL+S:** - Quick Save  
+**CTRL+Z:** - Undo  
+**CTRL+Y:** - Redo  
 
 Please adjust the **Playfield Boundary** size when exporting.  
 The curve coordinates will be remapped according to the size of this box during export.  
