@@ -1,4 +1,4 @@
-# 🎨 osu! 滑条曲线绘制工具 / osu! Slider Curve Drawing Tool  
+# 🎨 osu! 滑条曲线编辑器 / Bezier Curve Editor for osu!
 
 ![logo](https://github.com/Scatola-desu/Bezier-Curve-Editor-for-osu-/blob/main/icon.png)
 
