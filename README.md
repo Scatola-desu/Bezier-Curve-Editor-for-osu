@@ -30,7 +30,7 @@ You can infinitely enlarge the window or shrink the curve, making it convenient 
 |--------------|----------------|
 | **新增锚点 / Add Anchor Point** | `左键 / Left Click` |
 | **拖动锚点 / Move Anchor Point** | `右键 / Right Click` |
-| **缩放 / 平移 / Zoom / Pan** | `滚轮 / Mouse Wheel` |
+| **缩放 & 平移 / Zoom & Pan** | `滚轮 / Mouse Wheel` |
 | **增加中间锚点 / Add Mid Anchor Point** | `ALT + 左键 / ALT + Left Click` |
 | **增加头尾锚点 / Add Start/End Anchor Point** | `ALT + CTRL + 左键 / ALT + CTRL + Left Click` |
 | **删除锚点 / Delete Anchor Point** | `ALT + 右键 / ALT + Right Click` |
