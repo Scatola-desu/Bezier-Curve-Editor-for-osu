@@ -3,7 +3,7 @@
 ![logo](https://github.com/Scatola-desu/Bezier-Curve-Editor-for-osu-/blob/main/icon.png)
 
 一个简单的曲线绘制工具，用于绘制纯白点 osu! 滑条。  
-重新定义滑条设计，从这里开始！。  
+重新定义滑条设计，从这里开始！
 
 *A simple curve drawing tool for drawing pure white dot osu! sliders.  
 Redefine slider design—starting now!*
