@@ -3,10 +3,10 @@
 ![logo](https://github.com/Scatola-desu/Bezier-Curve-Editor-for-osu-/blob/main/icon.png)
 
 一个简单的曲线绘制工具，用于绘制纯白点 osu! 滑条。  
-可无限拉大窗口或缩小曲线，方便移动较远的锚点。  
+重新定义滑条设计，从这里开始！。  
 
 *A simple curve drawing tool for drawing pure white dot osu! sliders.  
-You can infinitely enlarge the window or shrink the curve, making it convenient to move distant anchor points.*
+Redefine slider design—starting now!*
 
 ---
 
