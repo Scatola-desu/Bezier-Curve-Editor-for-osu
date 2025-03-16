@@ -33,7 +33,7 @@ Redefine slider design—starting now!*
 | **缩放 & 平移 / Zoom & Pan** | `滚轮 / Mouse Wheel` |
 | **增加中间锚点 / Add Mid Anchor Point** | `ALT + 左键 / ALT + Left Click` |
 | **增加头尾锚点 / Add Start/End Anchor Point** | `ALT + CTRL + 左键 / ALT + CTRL + Left Click` |
-| **删除锚点 / Delete Anchor Point** | `ALT + 右键 / ALT + Right Click` |
+| **删除锚点 / Delete Anchor Point** | `在锚点上 ALT + 左键 / ALT + Left Click on Anchor` |
 | **拖动曲线和图片 / Drag Curve and Image** | `CTRL + 中键 / CTRL + Middle Click` |
 | **拖动曲线变形 / Deform Curve** | `CTRL + 左键拖动 / Drag with CTRL + Left Click` |
 | **旋转滑条 / Rotate Slider** | `右键拖动 / Drag with Right Click` |
