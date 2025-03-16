@@ -29,13 +29,15 @@ Redefine slider design—starting now!*
 | 操作 / Action | 快捷键 / Shortcut |
 |--------------|----------------|
 | **新增锚点 / Add Anchor Point** | `左键 / Left Click` |
-| **拖动锚点 / Move Anchor Point** | `右键 / Right Click` |
+| **拖动锚点 / Move Anchor Point** | `左键拖动 / Drag with Left Click` |
 | **缩放 & 平移 / Zoom & Pan** | `滚轮 / Mouse Wheel` |
 | **增加中间锚点 / Add Mid Anchor Point** | `ALT + 左键 / ALT + Left Click` |
 | **增加头尾锚点 / Add Start/End Anchor Point** | `ALT + CTRL + 左键 / ALT + CTRL + Left Click` |
 | **删除锚点 / Delete Anchor Point** | `ALT + 右键 / ALT + Right Click` |
 | **拖动曲线和图片 / Drag Curve and Image** | `CTRL + 中键 / CTRL + Middle Click` |
-| **拖动曲线变形 / Deform Curve** | `CTRL + 右键 / CTRL + Right Click` |
+| **拖动曲线变形 / Deform Curve** | `CTRL + 左键拖动 / Drag with CTRL + Left Click` |
+| **旋转滑条 / Rotate Slider** | `右键拖动 / Drag with Right Click` |
+| **设置旋转基准点 / Set Rotation Pivot** | `ALT + 右键 / ALT + Right Click` |
 | **快速保存 / Quick Save** | `CTRL + S` |
 | **撤销 / Undo** | `CTRL + Z` |
 | **重做 / Redo** | `CTRL + Y` |
@@ -71,6 +73,8 @@ Redefine slider design—starting now!*
 ---
 
 🚀 **Enjoy your mapping! 🎵**  
+![预览图](https://github.com/Scatola-desu/Bezier-Curve-Editor-for-osu/blob/main/images/v3.1.png)
+v3.1
 
 ![预览图](https://github.com/Scatola-desu/Bezier-Curve-Editor-for-osu-/blob/main/images/Curve_Deformation.gif)   
 v3.0  
