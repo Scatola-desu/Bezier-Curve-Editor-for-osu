@@ -73,6 +73,8 @@ Redefine slider design—starting now!*
 ---
 
 🚀 **Enjoy your mapping! 🎵**  
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A0A51C773P)
+
 ![预览图](https://github.com/Scatola-desu/Bezier-Curve-Editor-for-osu/blob/main/images/v3.1.png)
 v3.1
 
