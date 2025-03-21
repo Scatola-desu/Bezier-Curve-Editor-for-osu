@@ -8,7 +8,7 @@ class HoverButton(QPushButton):
         super(HoverButton, self).__init__(parent)
         self.detail_text = ""  # 按钮的详细说明文本
         self.parent_widget = None  # 父窗口引用
-        
+
     def enterEvent(self, event):
         """鼠标进入按钮区域时触发"""
         if hasattr(self, 'parent_widget') and self.parent_widget and hasattr(self, 'detail_text'):
@@ -18,15 +18,15 @@ class HoverButton(QPushButton):
                 if not hasattr(self.parent_widget, 'current_help_text'):
                     if hasattr(self.parent_widget, 'help_label') and self.parent_widget.help_label.isVisible():
                         self.parent_widget.current_help_text = self.parent_widget.help_label.text()
-                
+
                 # 更新帮助标签显示按钮的详细说明
                 if hasattr(self.parent_widget, 'help_label'):
                     self.parent_widget.help_label.setText(self.detail_text)
                     self.parent_widget.help_label.adjustSize()
                     self.parent_widget.update_help_position()
-        
+
         super(HoverButton, self).enterEvent(event)
-    
+
     def leaveEvent(self, event):
         """鼠标离开按钮区域时触发"""
         if hasattr(self, 'parent_widget') and self.parent_widget:
@@ -37,10 +37,11 @@ class HoverButton(QPushButton):
                     self.parent_widget.help_label.setText(self.parent_widget.help_label_text_full)
                     self.parent_widget.help_label.adjustSize()
                     self.parent_widget.update_help_position()
-        
+
         super(HoverButton, self).leaveEvent(event)
 from PyQt5.QtGui import QPainter, QPainterPath, QColor, QPen, QPixmap, QBrush, QVector2D, QIcon
 from PyQt5.QtCore import Qt, QPoint, QLocale, QLineF, QPropertyAnimation, QSize
+from PyQt5 import QtGui,QtCore
 import sys
 import math
 import pickle
@@ -64,7 +65,7 @@ reader = EditorReader()
 class BezierCurveEditor(QWidget):
     def __init__(self):
         super().__init__()
-        self.setMouseTracking(True) 
+        self.setMouseTracking(True)
         self.setWindowTitle("Bezier Curve Editor for osu!")
         self.setGeometry(100, 100, 1600, 900)
         self.control_points = []  # 存储控制点
@@ -131,7 +132,7 @@ class BezierCurveEditor(QWidget):
         self.backup_counter = 0  # 历史记录更新计数器
         self.backup_threshold = 5  # 每 5 次历史记录更新触发备份
         self.restore_backup_on_startup() # 检查并恢复备份
-        
+
         # 检查osu_songs_path是否有效
         self.is_osu_path_valid = self.check_osu_path_valid()
 
@@ -198,8 +199,8 @@ class BezierCurveEditor(QWidget):
             self.msg_points_export_min = "至少需要两个控制点才能导出！"
             self.msg_points_export_success = "控制点已成功导出到 {file_name}！"
             self.msg_title_prompt = "提示"
-            self.msg_title_success = "成功" 
-            self.msg_title_error = "错误" 
+            self.msg_title_success = "成功"
+            self.msg_title_error = "错误"
             self.msg_restore_backup = "检测到上次未保存的备份数据，是否恢复？"
             self.msg_title_backup = "恢复备份"
             self.msg_restore_backup2 = "无法恢复备份数据：{error}"
@@ -296,7 +297,7 @@ class BezierCurveEditor(QWidget):
             self.msg_title_prompt = "Prompt"
             self.msg_title_success = "Success"
             self.msg_title_error = "Error"
-            
+
             self.msg_restore_backup = "Detected unsaved backup data from the last session. Do you want to restore it?"
             self.msg_title_backup = "Restore Backup"
             self.msg_restore_backup2 = "Unable to restore backup data: {error}"
@@ -369,7 +370,7 @@ class BezierCurveEditor(QWidget):
         if self.cached_curve_points and len(self.cached_curve_points) > 1:
             self.initial_slider_length = self.calculate_curve_length()
             self.update()
-    
+
     def scale_to_initial_length(self):
         """缩放曲线使当前长度等于初始长度，以起始锚点为中心进行缩放"""
         if self.cached_curve_points and len(self.cached_curve_points) > 1 and self.initial_slider_length > 0:
@@ -379,7 +380,7 @@ class BezierCurveEditor(QWidget):
                 # 以起始锚点为中心进行缩放
                 center_x = self.control_points[0].x()  # 起始锚点的x坐标
                 center_y = self.control_points[0].y()  # 起始锚点的y坐标
-                
+
                 # 从第二个点开始缩放，保持起始锚点不变
                 for point in self.control_points[1:]:
                     dx = point.x() - center_x
@@ -388,22 +389,22 @@ class BezierCurveEditor(QWidget):
                     new_y = center_y + dy * scale_factor
                     point.setX(int(new_x))
                     point.setY(int(new_y))
-                
+
                 self.update_curve_cache()
                 self.update()
                 self.save_state()
-    
+
     def calculate_curve_length(self):
         """计算当前贝塞尔曲线的长度"""
         if not self.cached_curve_points or len(self.cached_curve_points) < 2:
             return 0
-        
+
         total_length = 0
         for i in range(len(self.cached_curve_points) - 1):
             p1 = self.cached_curve_points[i]
             p2 = self.cached_curve_points[i + 1]
             total_length += math.sqrt((p2.x() - p1.x()) ** 2 + (p2.y() - p1.y()) ** 2)
-        
+
         return total_length
 
     def load_selected_slider(self):
@@ -525,11 +526,11 @@ class BezierCurveEditor(QWidget):
             control_points_str = curve_data[2:].split("|")  # 去掉 "B|" 或 "C|"
             remapped_slider_points = [] # 用于存储反向映射后的滑条点
             prev_point = None # 用于存储前一个点，检测连续相同点
-            
+
             for pt in control_points_str:
                 x, y = map(int, pt.split(":"))
                 current_point = QPoint(int(x), int(y))
-                
+
                 # 检查是否与前一个点坐标相同（红锚点标记）
                 if prev_point is not None and prev_point.x() == current_point.x() and prev_point.y() == current_point.y():
                     # 如果与前一个点坐标相同，则跳过此点（因为已经添加过了）
@@ -537,7 +538,7 @@ class BezierCurveEditor(QWidget):
                     self.red_anchors.add(len(self.control_points) + len(remapped_slider_points) - 1)
                     prev_point = None # 重置前一个点，避免连续三个相同点的情况
                     continue
-                
+
                 # 正常处理点坐标
                 new_point_remapped = self.remap_coordinates( # 调用 remap_coordinates 进行反向映射
                     current_point,
@@ -547,7 +548,7 @@ class BezierCurveEditor(QWidget):
                 )
                 remapped_slider_points.append(new_point_remapped) # 将反向映射后的点添加到 remapped_slider_points 列表
                 prev_point = current_point # 更新前一个点
-            
+
             self.control_points.extend(remapped_slider_points) # 将反向映射后的滑条点列表添加到 self.control_points
             self.allow_save2osu = True
             # 更新曲线显示
@@ -629,10 +630,10 @@ class BezierCurveEditor(QWidget):
                         reverse=False
                     )
                     new_control_points.append(f"{osu_point.x()}:{osu_point.y()}")
-                    
+
                     # 如果当前点是红色锚点，则重复添加该点（红锚点在osu!中表示为连续两个相同的点）
                     if i in self.red_anchors:
-                        new_control_points.append(f"{osu_point.x()}:{osu_point.y()}") 
+                        new_control_points.append(f"{osu_point.x()}:{osu_point.y()}")
 
                 new_curve_data = "B|" + "|".join(new_control_points)
 
@@ -646,17 +647,17 @@ class BezierCurveEditor(QWidget):
                 with open(osu_file_path, "w", encoding="utf-8") as f:
                     f.writelines(osu_data)
 
-                QMessageBox.information(self, self.msg_title_success, self.msg_success_export_osu) 
+                QMessageBox.information(self, self.msg_title_success, self.msg_success_export_osu)
                 self.allow_save2osu = False
 
             except Exception as e:
-                QMessageBox.warning(self, self.msg_title_error, self.msg_error_save_slider.format(error=e)) 
+                QMessageBox.warning(self, self.msg_title_error, self.msg_error_save_slider.format(error=e))
                 self.allow_save2osu = False
         else:
             QMessageBox.warning(self, self.msg_title_error, "请从osu!重新导入滑条")
             self.allow_save2osu = False
 
-            
+
     def bernstein_basis_polynomial(self, n, i, t):
         if not (0 <= i <= n) or not (0 <= t <= 1):
             return 0
@@ -698,7 +699,7 @@ class BezierCurveEditor(QWidget):
         self.create_sidebar_buttons()
 
         # 操作提示标签
-        self.help_label = QLabel(self.help_label_text_full, self) 
+        self.help_label = QLabel(self.help_label_text_full, self)
         self.help_label.setStyleSheet("""
             QLabel {
                 background-color: rgba(30, 30, 30, 150);
@@ -716,10 +717,10 @@ class BezierCurveEditor(QWidget):
         # 默认显示帮助和滑块
         self.help_visible = True
         self.sliders_visible = True
-        
+
         # 创建滑块控件（放在右侧区域）
         self.create_sliders()
-        
+
         # 初始化快速保存提示标签（居中）
         self.save_label = QLabel(self.msg_quick_save_success, self)
         self.save_label.setStyleSheet("""
@@ -736,7 +737,7 @@ class BezierCurveEditor(QWidget):
         label_width = self.save_label.sizeHint().width()
         label_height = self.save_label.sizeHint().height()
         self.save_label.move((self.width() - label_width) // 2, (self.height() - label_height) // 2)
-        
+
         # 根据路径有效性显示/隐藏按钮
         self.update_buttons_visibility()
 
@@ -761,13 +762,13 @@ class BezierCurveEditor(QWidget):
             if button.toolTip() == self.button_text_show_help:
                 self.update_button_icon_color(button, self.help_visible)
                 break
-                
+
     def restart_program(self):
         """重启程序"""
         # 显示确认对话框
         reply = QMessageBox.question(self, self.msg_title_prompt, self.msg_prompt_restart_program,
                                    QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        
+
         if reply == QMessageBox.Yes:
             # 清空当前数据
             self.control_points = []
@@ -798,22 +799,22 @@ class BezierCurveEditor(QWidget):
             if button.toolTip() == self.button_text_sliders:
                 self.update_button_icon_color(button, self.sliders_visible)
                 break
-                
+
     def update_button_icon_color(self, button, is_active):
         """更新按钮图标颜色"""
         if hasattr(button, 'icon_path') and os.path.exists(button.icon_path):
             with open(button.icon_path, 'r') as f:
                 svg_content = f.read()
-            
+
             # 根据激活状态设置颜色
             color = "#FF8A9B" if is_active else "white"
             svg_content = svg_content.replace('stroke="currentColor"', f'stroke="{color}"')
-            
+
             # 创建临时文件用于设置图标
             temp_svg_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f"temp_normal_{id(button)}.svg")
             with open(temp_svg_path, 'w') as f:
                 f.write(svg_content)
-            
+
             formatted_path = temp_svg_path.replace('\\', '/')
             # 更新按钮样式，保留文本位置和样式
             button.setStyleSheet(self.sidebar_button_style + f"""
@@ -827,8 +828,8 @@ class BezierCurveEditor(QWidget):
                     color: {color};
                     border: 1px solid {"#FF8A9B" if is_active else "#474747"};
                 }}
-            """) 
-            
+            """)
+
     def load_config(self):
         """加载配置文件，获取osu! Songs文件夹路径"""
         try:
@@ -853,7 +854,7 @@ class BezierCurveEditor(QWidget):
                 msg.setWindowTitle(self.msg_set_osu_path_title)
                 msg.setText(self.msg_set_osu_path_prompt)
                 msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-                
+
                 if msg.exec_() == QMessageBox.Yes:
                     # 用户点击确认，打开文件夹选择对话框
                     folder_path = QFileDialog.getExistingDirectory(None, self.msg_set_osu_path_dialog)
@@ -867,16 +868,16 @@ class BezierCurveEditor(QWidget):
                     with open(self.config_file, 'w') as f:
                         json.dump({"osu_songs_path": None, "skip_prompt": True}, f, indent=4)
                     return None
-                    
+
                 # 如果用户取消选择，返回None
                 with open(self.config_file, 'w') as f:
                     json.dump({"osu_songs_path": None, "skip_prompt": False}, f, indent=4)
                 return None
-                
+
         except Exception as e:
             print(f"加载配置文件失败: {e}")
             return None
-            
+
     def save_config(self, osu_songs_path):
         """保存配置到文件"""
         try:
@@ -886,13 +887,13 @@ class BezierCurveEditor(QWidget):
         except Exception as e:
             print(f"保存配置文件失败: {e}")
             return False
-            
+
     def check_osu_path_valid(self):
         """检查osu! Songs文件夹路径是否有效"""
         if self.osu_songs_path is None:
             return False
         return os.path.exists(self.osu_songs_path) and os.path.isdir(self.osu_songs_path)
-        
+
     def set_osu_path(self):
         """设置osu! Songs文件夹路径"""
         folder_path = QFileDialog.getExistingDirectory(self, self.msg_set_osu_path, self.osu_songs_path)
@@ -906,12 +907,12 @@ class BezierCurveEditor(QWidget):
                 self.update_buttons_visibility()
             else:
                 QMessageBox.warning(self, self.msg_title_error, self.msg_set_osu_path_error)
-                
+
     def update_buttons_visibility(self):
         """根据osu路径有效性更新按钮显示状态"""
         # 在新的UI设计中，我们不再使用单独的按钮来控制可见性
         # 而是通过侧边栏按钮来处理所有功能
-        pass 
+        pass
 
     def update_help_position(self):
         """更新帮助标签的右下角位置"""
@@ -929,7 +930,7 @@ class BezierCurveEditor(QWidget):
         # 按钮配置 - 每个按钮的图标、提示文本、回调方法和详细说明
         system_locale_name = QLocale.system().name()
         is_chinese_system = system_locale_name.startswith("zh")
-        
+
         # 根据系统语言选择按钮详细说明文本
         if is_chinese_system:
             button_details = {
@@ -955,7 +956,7 @@ class BezierCurveEditor(QWidget):
                 "settings": "<span style=\"font-size: 14px; font-weight: bold; color: #ff8a9b\">Set the osu! song folder path</span><br>This must be set correctly to interact with the osu! editor.",
                 "visualization": "<span style=\"font-size: 14px; font-weight: bold; color: #ff8a9b\">Enable/Disable visualization effects</span><br>Includes visual aids such as anchor influence range and curve segmentation. Disabling this can save performance overhead."
             }
-        
+
         button_configs = [
             {"icon": "icons/import_slider.svg", "tooltip": self.button_text_load_selected_slider, "callback": self.load_selected_slider, "detail": button_details["import_slider"]},
             {"icon": "icons/export_slider.svg", "tooltip": self.button_text_export_to_osu, "callback": self.save_slider_data, "detail": button_details["export_slider"]},
@@ -967,25 +968,25 @@ class BezierCurveEditor(QWidget):
             {"icon": "icons/settings.svg", "tooltip": self.button_text_osu_path, "callback": self.set_osu_path, "detail": button_details["settings"]},
             {"icon": "icons/visualization.svg", "tooltip": self.button_text_visualizations, "callback": self.toggle_visualization_display, "active": True, "detail": button_details["visualization"]}
         ]
-        
+
         # 创建按钮
         self.sidebar_buttons = []
         button_height = 75  # 增加高度以容纳文字
-        button_width = 75   
-        button_margin = 8   
-        
+        button_width = 75
+        button_margin = 8
+
         # 计算底部按钮的起始位置
         bottom_buttons = ["slider_toggle", "help", "settings", "visualization"]
         bottom_start = self.height() - (len(bottom_buttons) * (button_height + button_margin)) - button_margin
-        
+
         # 保存当前帮助文本，用于鼠标离开按钮时恢复
         self.original_help_text = self.help_label_text_full
-        
+
         for i, config in enumerate(button_configs):
             button = HoverButton(self)
             button.setStyleSheet(self.sidebar_button_style)
             button.setFixedSize(button_width, button_height)
-            
+
             # 判断是否为底部按钮
             icon_name = config["icon"].split("/")[-1].split(".")[0]
             if icon_name in bottom_buttons:
@@ -993,26 +994,26 @@ class BezierCurveEditor(QWidget):
                 y_pos = bottom_start + bottom_index * (button_height + button_margin)
             else:
                 y_pos = i * (button_height + button_margin) + 2
-            
+
             button.move(2, y_pos)
             button.clicked.connect(config["callback"])
             button.setToolTip(config["tooltip"])
-            
+
             # 设置SVG图标
             icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), config["icon"])
             button.icon_path = icon_path  # 保存icon_path到按钮对象
             with open(icon_path, 'r') as f:
                 svg_content = f.read()
-            
+
             # 替换SVG中的颜色
             active_color = "#FF8A9B" if config.get("active", False) else "white"
             svg_content = svg_content.replace('stroke="currentColor"', f'stroke="{active_color}"')
-            
+
             # 创建临时文件用于设置图标
             temp_svg_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f"temp_{i}.svg")
             with open(temp_svg_path, 'w') as f:
                 f.write(svg_content)
-            
+
             # 设置图标和文字
             button.setText(config["tooltip"])
             formatted_path = temp_svg_path.replace('\\', '/')
@@ -1028,13 +1029,13 @@ class BezierCurveEditor(QWidget):
                     color: {active_color};
                 }}
             """)
-            
+
             # 设置按钮的详细说明文本
             button.detail_text = config["detail"]
             button.parent_widget = self  # 保存父窗口引用，用于在悬停事件中访问help_label
-            
+
             self.sidebar_buttons.append(button)
-    
+
     def create_sliders(self):
         """创建滑块控件"""
         # 创建半透明面板
@@ -1046,7 +1047,7 @@ class BezierCurveEditor(QWidget):
                 padding: 10px;
             }
         """)
-        
+
         # 滑块样式
         slider_style = """
             QSlider {
@@ -1087,10 +1088,10 @@ class BezierCurveEditor(QWidget):
                 opacity: 0.3;
             }
         """
-        
+
         # 标签样式
         label_style = "color: #FFFFFF; font-size: 12px; font-weight: 500; letter-spacing: 0.5px; background: transparent;"
-        
+
         # 滑块配置
         slider_configs = [
             {"name": "scale", "label": self.button_text_image_scale, "min": 10, "max": 200, "value": 100, "callback": self.update_image_scale},
@@ -1100,7 +1101,7 @@ class BezierCurveEditor(QWidget):
             {"name": "outline_opacity", "label": self.button_text_outline_opacity, "min": 0, "max": 90, "value": 85, "callback": self.update_outline_opacity},
             {"name": "rect_scale", "label": self.button_text_playfield_boundary, "min": 10, "max": 100, "value": int(self.rect_scale * 100), "callback": self.update_rect_scale}
         ]
-        
+
         # 创建滑块控件
         self.sliders = {}
         self.slider_labels = []
@@ -1111,14 +1112,14 @@ class BezierCurveEditor(QWidget):
         start_x = 10
         start_y = 10
         panel_padding = 10
-        
+
         for i, config in enumerate(slider_configs):
             # 创建标签
             label = QLabel(config["label"], self.sliders_panel)
             label.setStyleSheet(label_style)
             label.move(start_x, start_y + i * (slider_height + label_height + slider_margin))
             self.slider_labels.append(label)
-            
+
             # 创建滑块
             slider = QSlider(Qt.Horizontal, self.sliders_panel)
             slider.setStyleSheet(slider_style)
@@ -1128,10 +1129,10 @@ class BezierCurveEditor(QWidget):
             slider.setFixedWidth(slider_width)
             slider.move(start_x, start_y + i * (slider_height + label_height + slider_margin) + label_height)
             slider.valueChanged.connect(config["callback"])
-            
+
             # 保存滑块引用
             self.sliders[config["name"]] = slider
-            
+
             # 为circle_size滑块添加值标签
             if config["name"] == "circle_size":
                 self.circle_size_value_label = QLabel(str(slider.value()), self.sliders_panel)
@@ -1140,14 +1141,14 @@ class BezierCurveEditor(QWidget):
                 self.circle_size_value_label.move(start_x + label_width + 5, start_y + i * (slider_height + label_height + slider_margin))
                 self.slider_labels.append(self.circle_size_value_label)
                 slider.valueChanged.connect(self.update_circle_size_label)
-            
+
             # 设置图片相关滑块的初始状态
             if config["name"] in ["scale", "opacity"]:
                 slider.setEnabled(False)
                 # 设置初始透明度
                 slider.setWindowOpacity(0.3)
                 label.setWindowOpacity(0.3)
-        
+
         # 创建圆形按钮样式
         circle_button_style = """
             QPushButton {
@@ -1164,11 +1165,11 @@ class BezierCurveEditor(QWidget):
                 background-color: #181D28;
             }
         """
-        
+
         # 计算按钮位置
         button_y = start_y + len(slider_configs) * (slider_height + label_height + slider_margin) + 20
         button_spacing = 50
-        
+
         # 创建撤销按钮
         self.undo_button = QPushButton(self.sliders_panel)
         self.undo_button.setStyleSheet(circle_button_style)
@@ -1178,7 +1179,7 @@ class BezierCurveEditor(QWidget):
         icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icons/undo.svg")
         self.undo_button.setIcon(QIcon(icon_path))
         self.undo_button.setIconSize(QSize(24, 24))
-        
+
         # 创建重做按钮
         self.redo_button = QPushButton(self.sliders_panel)
         self.redo_button.setStyleSheet(circle_button_style)
@@ -1188,7 +1189,7 @@ class BezierCurveEditor(QWidget):
         icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icons/redo.svg")
         self.redo_button.setIcon(QIcon(icon_path))
         self.redo_button.setIconSize(QSize(24, 24))
-        
+
         # 创建清空画布按钮
         self.clear_button = QPushButton(self.sliders_panel)
         self.clear_button.setStyleSheet(circle_button_style)
@@ -1198,23 +1199,23 @@ class BezierCurveEditor(QWidget):
         icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icons/clear.svg")
         self.clear_button.setIcon(QIcon(icon_path))
         self.clear_button.setIconSize(QSize(24, 24))
-        
+
         # 设置面板大小和位置
         panel_width = slider_width + 50
         panel_height = (len(slider_configs) * (slider_height + label_height + slider_margin)) + panel_padding * 2 + 80
         self.sliders_panel.setGeometry(90, 10, panel_width, panel_height)
         self.sliders_panel.show()
-    
+
     def resizeEvent(self, event):
         """窗口大小变化时更新帮助位置"""
         super().resizeEvent(event)
-        
+
         # 更新左侧面板和绘图区域大小
         if hasattr(self, 'left_panel'):
             self.left_panel.setGeometry(0, 0, 80, self.height())
         if hasattr(self, 'drawing_area'):
             self.drawing_area.setGeometry(80, 0, self.width() - 80, self.height())
-            
+
         # 更新帮助标签位置
         if hasattr(self, 'help_label'):
             self.update_help_position()  # 更新帮助标签位置
@@ -1229,14 +1230,14 @@ class BezierCurveEditor(QWidget):
             button_margin = 8
             bottom_buttons = ["slider_toggle", "help", "settings", "visualization"]
             bottom_start = self.height() - (len(bottom_buttons) * (button_height + button_margin)) - button_margin
-            
+
             for button in self.sidebar_buttons:
                 icon_name = button.icon_path.split("/")[-1].split(".")[0]
                 if icon_name in bottom_buttons:
                     bottom_index = bottom_buttons.index(icon_name)
                     y_pos = bottom_start + bottom_index * (button_height + button_margin)
                     button.move(2, y_pos)
-                    
+
         self.update_circle_size()   # 在窗口大小改变时调用 update_circle_size 函数，更新描边粗细
         self.update_curve_cache()  # 刷新缓存
         self.update()              # 并请求重绘，应用新的描边粗细
@@ -1307,7 +1308,7 @@ class BezierCurveEditor(QWidget):
                 self.red_anchors = set()  # 兼容旧版本保存的状态
             self.update_curve_cache()  # 刷新缓存
             self.update()
-            
+
     def keyReleaseEvent(self, event):
         # 释放Shift键时更新状态
         if event.key() == Qt.Key_Shift:
@@ -1366,7 +1367,7 @@ class BezierCurveEditor(QWidget):
                         # 获取相邻的两个锚点
                         prev_idx = current_idx - 1 if current_idx > 0 else None
                         next_idx = current_idx + 1 if current_idx < len(self.control_points) - 1 else None
-                        
+
                         # 将相邻点投影到切线上
                         if prev_idx is not None:
                             projected_point = self.project_point_to_line(
@@ -1376,7 +1377,7 @@ class BezierCurveEditor(QWidget):
                             )
                             if projected_point:
                                 self.control_points[prev_idx] = projected_point
-                        
+
                         if next_idx is not None:
                             projected_point = self.project_point_to_line(
                                 self.control_points[next_idx],
@@ -1392,36 +1393,36 @@ class BezierCurveEditor(QWidget):
                 self.dragging_point = current_idx
                 self.is_dragging_control_point = True
                 self.drag_start_point = event.pos()
-                
+
                 # 保存拖动开始时的状态，用于shift+左键拖动时计算
                 self.save_state() # 保存状态，以便可以撤销
-                
+
                 # 锁定与相邻红色锚点形成的直线 - 仅在按下Shift键时锁定
                 if not current_idx in self.red_anchors and event.modifiers() == Qt.ShiftModifier:  # 只对白色锚点执行锁定，且仅在按下Shift键时
                     # 检查前一个点是否为红色锚点
                     self.locked_line_direction = None
                     self.locked_line_point = None
-                    
+
                     # 检查前一个点
                     prev_red_idx = None
                     if current_idx > 0 and (current_idx - 1) in self.red_anchors:
                         prev_red_idx = current_idx - 1
-                    
+
                     # 检查后一个点
                     next_red_idx = None
                     if current_idx < len(self.control_points) - 1 and (current_idx + 1) in self.red_anchors:
                         next_red_idx = current_idx + 1
-                    
+
                     # 如果有相邻的红色锚点，锁定直线
                     if prev_red_idx is not None or next_red_idx is not None:
                         red_idx = prev_red_idx if prev_red_idx is not None else next_red_idx
                         red_point = self.control_points[red_idx]
-                        
+
                         # 计算从红色锚点到当前锚点的方向向量
                         dx = self.control_points[current_idx].x() - red_point.x()
                         dy = self.control_points[current_idx].y() - red_point.y()
                         length = math.sqrt(dx * dx + dy * dy)
-                        
+
                         if length > 0:
                             # 归一化方向向量并保存
                             self.locked_line_direction = (dx/length, dy/length)
@@ -1430,7 +1431,7 @@ class BezierCurveEditor(QWidget):
                     # 无修饰键时，不锁定直线方向
                     self.locked_line_direction = None
                     self.locked_line_point = None
-                
+
                 if event.modifiers() == Qt.ShiftModifier:
                     # 记录初始锚点坐标和鼠标位置
                     self.initial_anchor_pos = self.control_points[self.dragging_point]
@@ -1446,7 +1447,7 @@ class BezierCurveEditor(QWidget):
                     self.update_curve_cache()
                     self.update()
                     return
-                
+
                 return  # 提前返回，避免执行后续的左键添加锚点逻辑
             # 3. 仅在无预选中锚点和无修饰键时 左键加添锚点 (保持不变)
             elif self.pre_selected_point_index is None and event.modifiers() == Qt.NoModifier: # 确保没有预选中点和没有修饰键
@@ -1466,7 +1467,7 @@ class BezierCurveEditor(QWidget):
                         for idx in self.red_anchors:
                             updated_red_anchors.add(idx + 1)  # 所有红色锚点索引+1
                         self.red_anchors = updated_red_anchors
-                        
+
                         self.control_points.insert(0, event.pos())
                     else:
                         # 添加到末尾不需要更新红色锚点索引
@@ -1504,7 +1505,7 @@ class BezierCurveEditor(QWidget):
                     # 获取当前红色锚点的索引和位置
                     red_idx = self.pre_selected_point_index
                     red_point = self.control_points[red_idx]
-                    
+
                     # 检查是否有前一个锚点
                     if red_idx > 0:
                         prev_idx = red_idx - 1
@@ -1517,30 +1518,30 @@ class BezierCurveEditor(QWidget):
                             # 保持前一个点到红色锚点的距离不变
                             prev_point = self.control_points[prev_idx]
                             next_point = self.control_points[next_idx]
-                            
+
                             # 计算前一个点到红色锚点的距离
                             prev_distance = math.sqrt((prev_point.x() - red_point.x())**2 + (prev_point.y() - red_point.y())**2)
-                            
+
                             # 计算方向向量（从红色锚点指向前一个点）
                             direction_x = prev_point.x() - red_point.x()
                             direction_y = prev_point.y() - red_point.y()
-                            
+
                             # 归一化方向向量
                             length = math.sqrt(direction_x**2 + direction_y**2)
                             if length > 0:
                                 direction_x /= length
                                 direction_y /= length
-                            
+
                             # 计算后一个点的新位置（与前一个点在同一直线上，但在红色锚点的另一侧）
                             # 使用与前一个点相同的距离
                             new_next_x = red_point.x() - direction_x * prev_distance
                             new_next_y = red_point.y() - direction_y * prev_distance
-                            
+
                             # 更新后一个点的位置
                             self.control_points[next_idx] = QPoint(int(new_next_x), int(new_next_y))
                             self.update_curve_cache()
                             self.update()
-                    
+
             # 【新增：Alt + 右键设置旋转基准点】
             elif event.modifiers() == Qt.AltModifier:
                 self.rotation_pivot_point = event.pos() # 设置旋转基准点为当前鼠标位置
@@ -1582,7 +1583,7 @@ class BezierCurveEditor(QWidget):
         if self.is_dragging_control_point:
             if self.dragging_point is not None:
                 current_idx = self.dragging_point
-                
+
                 # 如果拖动的是红色锚点，直接更新位置，不进行投影
                 if current_idx in self.red_anchors:
                     self.control_points[current_idx] = event.pos()
@@ -1608,21 +1609,21 @@ class BezierCurveEditor(QWidget):
                             # 计算N-2到N-1和N+2到N+1的直线方向向量
                             prev_dir = None
                             next_dir = None
-                            
+
                             # 计算前一条直线方向向量 (N-2到N-1)
                             if prev_red_idx > 0:  # 确保N-2存在
                                 prev_dir = self.calculate_direction_vector(prev_red_idx-1, prev_red_idx)
                             else:
                                 # 如果N-2不存在，使用N-1的切线方向
                                 prev_dir = self.calculate_tangent_line(prev_red_idx)
-                                
+
                             # 计算后一条直线方向向量 (N+2到N+1)
                             if next_red_idx < len(self.control_points) - 1:  # 确保N+2存在
                                 next_dir = self.calculate_direction_vector(next_red_idx+1, next_red_idx)
                             else:
                                 # 如果N+2不存在，使用N+1的切线方向
                                 next_dir = self.calculate_tangent_line(next_red_idx)
-                            
+
                             if prev_dir and next_dir:
                                 # 计算两条直线的交点
                                 intersection = self.calculate_line_intersection(
@@ -1633,7 +1634,7 @@ class BezierCurveEditor(QWidget):
                                 )
                                 if intersection:
                                     self.control_points[current_idx] = intersection
-                        
+
                         # 如果只有一个相邻的红色锚点
                         elif (prev_red_idx is not None) != (next_red_idx is not None):
                             red_idx = prev_red_idx if prev_red_idx is not None else next_red_idx
@@ -1660,7 +1661,7 @@ class BezierCurveEditor(QWidget):
             delta = current_pos - self.drag_start_pos
 
             t = self.locked_t
-            
+
             # 如果没有红色锚点，按原方式计算整条曲线的影响力
             if not self.red_anchors:
                 curve_order = len(self.control_points) - 1
@@ -1677,16 +1678,16 @@ class BezierCurveEditor(QWidget):
                     if distance < min_distance:
                         min_distance = distance
                         closest_idx = i
-                
+
                 # 计算每个分段的曲线点范围
                 segments = []
                 start_idx = 0
                 segment_ranges = []
                 start_point_idx = 0
-                
+
                 # 按索引排序红色锚点
                 sorted_red_anchors = sorted(self.red_anchors)
-                
+
                 # 处理所有分段
                 for red_idx in sorted_red_anchors:
                     if red_idx > start_idx:  # 确保有足够的点形成一段
@@ -1697,7 +1698,7 @@ class BezierCurveEditor(QWidget):
                             segment_ranges.append((start_point_idx, start_point_idx + segment_point_count - 1))
                             start_point_idx += segment_point_count - 1  # 减1是因为相邻分段的端点重合
                     start_idx = red_idx
-                
+
                 # 处理最后一段（最后一个红色锚点到结束）
                 if start_idx < len(self.control_points) - 1:
                     segments.append((start_idx, len(self.control_points) - 1))
@@ -1705,11 +1706,11 @@ class BezierCurveEditor(QWidget):
                     if len(segment_points) >= 2:  # 确保分段至少有两个点
                         segment_point_count = self.curve_segments + 1
                         segment_ranges.append((start_point_idx, start_point_idx + segment_point_count - 1))
-                
+
                 # 根据closest_idx找出所在分段
                 current_segment = None
                 segment_t = t  # 默认使用全局t值
-                
+
                 for i, (start_range, end_range) in enumerate(segment_ranges):
                     if start_range <= closest_idx <= end_range:
                         current_segment = segments[i]
@@ -1718,13 +1719,13 @@ class BezierCurveEditor(QWidget):
                         if segment_length > 0:
                             segment_t = (closest_idx - start_range) / segment_length
                         break
-                
+
                 # 如果找到了所在分段，只计算该分段内锚点的影响力
                 if current_segment:
                     segment_start, segment_end = current_segment
                     segment_points = self.control_points[segment_start:segment_end+1]
                     segment_curve_order = len(segment_points) - 1
-                    
+
                     # 只计算当前分段内锚点的影响力并应用变形
                     for i in range(segment_start, segment_end + 1):
                         local_idx = i - segment_start  # 在分段内的索引
@@ -1772,7 +1773,7 @@ class BezierCurveEditor(QWidget):
             current_pos = event.pos()
             delta = current_pos - self.drag_start_pos
             t = self.locked_t
-            
+
             # 如果没有红色锚点，按原方式计算整条曲线的影响力
             if not self.red_anchors:
                 curve_order = len(self.control_points) - 1
@@ -1789,16 +1790,16 @@ class BezierCurveEditor(QWidget):
                     if distance < min_distance:
                         min_distance = distance
                         closest_idx = i
-                
+
                 # 计算每个分段的曲线点范围
                 segments = []
                 start_idx = 0
                 segment_ranges = []
                 start_point_idx = 0
-                
+
                 # 按索引排序红色锚点
                 sorted_red_anchors = sorted(self.red_anchors)
-                
+
                 # 处理所有分段
                 for red_idx in sorted_red_anchors:
                     if red_idx > start_idx:  # 确保有足够的点形成一段
@@ -1809,7 +1810,7 @@ class BezierCurveEditor(QWidget):
                             segment_ranges.append((start_point_idx, start_point_idx + segment_point_count - 1))
                             start_point_idx += segment_point_count - 1  # 减1是因为相邻分段的端点重合
                     start_idx = red_idx
-                
+
                 # 处理最后一段（最后一个红色锚点到结束）
                 if start_idx < len(self.control_points) - 1:
                     segments.append((start_idx, len(self.control_points) - 1))
@@ -1817,11 +1818,11 @@ class BezierCurveEditor(QWidget):
                     if len(segment_points) >= 2:  # 确保分段至少有两个点
                         segment_point_count = self.curve_segments + 1
                         segment_ranges.append((start_point_idx, start_point_idx + segment_point_count - 1))
-                
+
                 # 根据closest_idx找出所在分段
                 current_segment = None
                 segment_t = t  # 默认使用全局t值
-                
+
                 for i, (start_range, end_range) in enumerate(segment_ranges):
                     if start_range <= closest_idx <= end_range:
                         current_segment = segments[i]
@@ -1830,13 +1831,13 @@ class BezierCurveEditor(QWidget):
                         if segment_length > 0:
                             segment_t = (closest_idx - start_range) / segment_length
                         break
-                
+
                 # 如果找到了所在分段，只计算该分段内锚点的影响力
                 if current_segment:
                     segment_start, segment_end = current_segment
                     segment_points = self.control_points[segment_start:segment_end+1]
                     segment_curve_order = len(segment_points) - 1
-                    
+
                     # 只计算当前分段内锚点的影响力并应用变形
                     for i in range(segment_start, segment_end + 1):
                         local_idx = i - segment_start  # 在分段内的索引
@@ -1850,7 +1851,7 @@ class BezierCurveEditor(QWidget):
                         influence = self.bernstein_basis_polynomial(curve_order, i, t)
                         move_vector = QPoint(int(delta.x() * influence * 2), int(delta.y() * influence * 2))
                         self.control_points[i] = self.control_points[i] + move_vector
-            
+
             self.drag_start_pos = current_pos
             self.update_curve_cache()
 
@@ -1932,28 +1933,28 @@ class BezierCurveEditor(QWidget):
         rotated_x = dx * math.cos(angle_radians) - dy * math.sin(angle_radians) + pivot.x()
         rotated_y = dx * math.sin(angle_radians) + dy * math.cos(angle_radians) + pivot.y()
         return QPoint(int(rotated_x), int(rotated_y))
-        
+
     def calculate_point_on_line(self, line_point1, line_point2, distance_from_point1):
         """计算直线上距离起点特定距离的点"""
         if line_point1 == line_point2:  # 避免除以零错误
             return QPoint(line_point1)
-            
+
         # 计算方向向量
         direction = QPoint(line_point2.x() - line_point1.x(), line_point2.y() - line_point1.y())
-        
+
         # 计算向量长度
         length = math.sqrt(direction.x() ** 2 + direction.y() ** 2)
-        
+
         # 归一化方向向量
         if length > 0:
             normalized_direction = QPoint(int(direction.x() / length), int(direction.y() / length))
         else:
             return QPoint(line_point1)  # 避免除以零
-        
+
         # 计算目标点坐标
         result_x = line_point1.x() + normalized_direction.x() * distance_from_point1
         result_y = line_point1.y() + normalized_direction.y() * distance_from_point1
-        
+
         return QPoint(int(result_x), int(result_y))
 
     def delete_control_point_by_index(self, index):
@@ -1966,13 +1967,13 @@ class BezierCurveEditor(QWidget):
                 msg.setStandardButtons(QMessageBox.Ok)
                 msg.exec_()
                 return  # 禁止删除，直接返回
-                
+
             self.save_state()
-            
+
             # 删除红色锚点（如果当前点是红色锚点）
             if index in self.red_anchors:
                 self.red_anchors.remove(index)
-            
+
             # 更新其他红色锚点的索引
             updated_red_anchors = set()
             for idx in self.red_anchors:
@@ -1981,9 +1982,9 @@ class BezierCurveEditor(QWidget):
                 elif idx < index:
                     updated_red_anchors.add(idx)  # 删除点前的红色锚点索引不变
             self.red_anchors = updated_red_anchors
-            
+
             del self.control_points[index]
-            
+
             # 同步更新高亮索引
             if self.highlighted_segment_index is not None and self.highlighted_segment_index >= index:
                 if self.highlighted_segment_index > 0:
@@ -1995,7 +1996,7 @@ class BezierCurveEditor(QWidget):
                     self.pre_selected_point_index -= 1
                 elif index == self.pre_selected_point_index:
                     self.pre_selected_point_index = None
-                    
+
             self.update_curve_cache()
             self.update()
 
@@ -2063,7 +2064,7 @@ class BezierCurveEditor(QWidget):
         """刷新贝塞尔曲线缓存，支持红色锚点和曲线分段"""
         if len(self.control_points) >= 2:
             self.cached_curve_points = []
-            
+
             # 如果没有红色锚点，按原方式计算整条曲线
             if not self.red_anchors:
                 for t in range(0, self.curve_segments + 1):
@@ -2075,20 +2076,20 @@ class BezierCurveEditor(QWidget):
                 # 首先将控制点按照红色锚点分段
                 segments = []
                 start_idx = 0
-                
+
                 # 按索引排序红色锚点
                 sorted_red_anchors = sorted(self.red_anchors)
-                
+
                 # 处理所有分段
                 for red_idx in sorted_red_anchors:
                     if red_idx > start_idx:  # 确保有足够的点形成一段
                         segments.append(self.control_points[start_idx:red_idx+1])
                     start_idx = red_idx
-                
+
                 # 处理最后一段（最后一个红色锚点到结束）
                 if start_idx < len(self.control_points) - 1:
                     segments.append(self.control_points[start_idx:])
-                
+
                 # 为每个分段计算贝塞尔曲线点
                 for segment in segments:
                     if len(segment) >= 2:  # 确保分段至少有两个点
@@ -2098,11 +2099,11 @@ class BezierCurveEditor(QWidget):
                             t_normalized = t / self.curve_segments
                             point = self.calculate_bezier_point(t_normalized, segment)
                             segment_points.append(point)
-                        
+
                         # 如果不是第一段，移除第一个点以避免重复
                         if self.cached_curve_points and segment_points:
                             segment_points = segment_points[1:]
-                            
+
                         # 将当前分段的点添加到缓存中
                         self.cached_curve_points.extend(segment_points)
         else:
@@ -2112,19 +2113,19 @@ class BezierCurveEditor(QWidget):
         """根据偏移量插值计算颜色，从 #00beca 到 #f177ae"""
         if max_offset == 0:
             return QColor(min_color)  # 无偏移时返回最小颜色
-        
+
         # 定义颜色范围
         min_color = QColor(min_color)
         max_color = QColor(max_color)
-        
+
         # 计算插值比例
         ratio = min(offset / max_offset, 1.0)  # 限制在 [0, 1] 区间
-        
+
         # 线性插值计算 RGB
         r = int(min_color.red() + (max_color.red() - min_color.red()) * (ratio ** 3))
         g = int(min_color.green() + (max_color.green() - min_color.green()) * (ratio ** 3))
         b = int(min_color.blue() + (max_color.blue() - min_color.blue()) * (ratio ** 3))
-        
+
         return QColor(r, g, b)
 
     def insert_control_point(self, pos):
@@ -2152,7 +2153,7 @@ class BezierCurveEditor(QWidget):
             new_point = pos #  直接使用鼠标点击位置 pos 作为新控制点的位置
 
             self.save_state()
-            
+
             # 更新红色锚点索引，考虑插入新点后的索引变化
             updated_red_anchors = set()
             for idx in self.red_anchors:
@@ -2161,7 +2162,7 @@ class BezierCurveEditor(QWidget):
                 else:
                     updated_red_anchors.add(idx)  # 插入点前的红色锚点索引不变
             self.red_anchors = updated_red_anchors
-            
+
             self.control_points.insert(insert_segment_index, new_point)
             self.update_curve_cache()  # 刷新缓存
             self.update()
@@ -2177,15 +2178,15 @@ class BezierCurveEditor(QWidget):
             # msg.setStyleSheet("QMessageBox { background-color: #1A1A1A; color: #FFFFFF; } QPushButton { background-color: #007AFF; color: #FFFFFF; }")
             msg.exec_()
             return  # 禁止删除，直接返回
-        
+
         for i, point in enumerate(self.control_points):
             if (pos - point).manhattanLength() < 10:
                 self.save_state()
-                
+
                 # 删除红色锚点（如果当前点是红色锚点）
                 if i in self.red_anchors:
                     self.red_anchors.remove(i)
-                
+
                 # 更新其他红色锚点的索引
                 updated_red_anchors = set()
                 for idx in self.red_anchors:
@@ -2194,7 +2195,7 @@ class BezierCurveEditor(QWidget):
                     elif idx < i:
                         updated_red_anchors.add(idx)  # 删除点前的红色锚点索引不变
                 self.red_anchors = updated_red_anchors
-                
+
                 self.control_points.pop(i)
                 # 同步更新高亮索引
                 if self.highlighted_segment_index is not None and self.highlighted_segment_index >= i:
@@ -2246,14 +2247,14 @@ class BezierCurveEditor(QWidget):
                 if distance < min_distance:
                     min_distance = distance
                     closest_idx = i
-            
+
             if min_distance < ctrl_highlight_threshold:
                 self.closest_curve_point = self.cached_curve_points[closest_idx]
                 t = closest_idx / self.curve_segments  # 归一化 t 值
-                
+
                 # 计算每个锚点的影响力
                 self.anchor_influences = []
-                
+
                 # 如果没有红色锚点，按原方式计算影响力
                 if not self.red_anchors:
                     curve_order = len(self.control_points) - 1
@@ -2265,35 +2266,35 @@ class BezierCurveEditor(QWidget):
                     # 首先找出鼠标所在的曲线分段
                     segments = []
                     start_idx = 0
-                    
+
                     # 按索引排序红色锚点
                     sorted_red_anchors = sorted(self.red_anchors)
-                    
+
                     # 处理所有分段
                     for red_idx in sorted_red_anchors:
                         if red_idx > start_idx:  # 确保有足够的点形成一段
                             segments.append((start_idx, red_idx))
                         start_idx = red_idx
-                    
+
                     # 处理最后一段（最后一个红色锚点到结束）
                     if start_idx < len(self.control_points) - 1:
                         segments.append((start_idx, len(self.control_points) - 1))
-                    
+
                     # 找出鼠标最近点所在的分段
                     current_segment = None
                     segment_t = t  # 默认使用全局t值
-                    
+
                     # 计算每个分段的曲线点范围
                     segment_ranges = []
                     start_point_idx = 0
-                    
+
                     for segment_start, segment_end in segments:
                         segment_points = self.control_points[segment_start:segment_end+1]
                         if len(segment_points) >= 2:  # 确保分段至少有两个点
                             segment_point_count = self.curve_segments + 1
                             segment_ranges.append((start_point_idx, start_point_idx + segment_point_count - 1))
                             start_point_idx += segment_point_count - 1  # 减1是因为相邻分段的端点重合
-                    
+
                     # 根据closest_idx找出所在分段
                     for i, (start_range, end_range) in enumerate(segment_ranges):
                         if start_range <= closest_idx <= end_range:
@@ -2303,16 +2304,16 @@ class BezierCurveEditor(QWidget):
                             if segment_length > 0:
                                 segment_t = (closest_idx - start_range) / segment_length
                             break
-                    
+
                     # 初始化所有锚点的影响力为0
                     self.anchor_influences = [0.0] * len(self.control_points)
-                    
+
                     # 如果找到了所在分段，计算该分段内锚点的影响力
                     if current_segment:
                         segment_start, segment_end = current_segment
                         segment_points = self.control_points[segment_start:segment_end+1]
                         segment_curve_order = len(segment_points) - 1
-                        
+
                         # 只计算当前分段内锚点的影响力
                         for i in range(segment_start, segment_end + 1):
                             local_idx = i - segment_start  # 在分段内的索引
@@ -2335,7 +2336,7 @@ class BezierCurveEditor(QWidget):
                 closest_point = self.calculate_bezier_point(t, self.control_points)
             else:
                 closest_point = self.closest_curve_point
-            
+
             # 绘制最近点（蓝色实心圆）
             painter.setBrush(QBrush(QColor("#495CDA")))
             painter.setPen(Qt.NoPen)
@@ -2360,14 +2361,14 @@ class BezierCurveEditor(QWidget):
             # 绘制锚点影响力圆圈（动态颜色）
             if self.anchor_influences and len(self.anchor_influences) <= len(self.control_points) and self.is_visualization_enabled:
                 max_influence = max(self.anchor_influences) if self.anchor_influences and max(self.anchor_influences) > 0 else 1.0
-                
+
                 # 安全地获取最大影响力点的索引
                 try:
                     max_influence_idx = self.anchor_influences.index(max_influence)  # 最大影响力点的索引
                 except ValueError:
                     # 如果找不到最大影响力值（可能在红色锚点分段计算中出现），使用默认值
                     max_influence_idx = 0
-                
+
                 # 存储筛选出的锚点信息
                 anchor_data = []
 
@@ -2377,7 +2378,7 @@ class BezierCurveEditor(QWidget):
                         radius = 4 + 9 * (normalized_influence) ** 3  # 半径 4-12
                         alpha = normalized_influence  # 透明度 0.2-1.0
                         pen_width = 6 * normalized_influence  # 描边粗细 1-3
-                    
+
                     # 动态颜色插值，默认最大为 rgb(72, 75, 100)
                     if i == max_influence_idx:
                         ring_color = QColor("#354eec")  # 最大影响力点为红色
@@ -2385,11 +2386,11 @@ class BezierCurveEditor(QWidget):
                     else:
                         ring_color = self.interpolate_color(influence, max_influence, max_color="#2E3DA1",min_color="#484B64")
                         ring_color.setAlphaF(alpha)
-                    
+
                     painter.setPen(QPen(ring_color, pen_width))
                     painter.setBrush(Qt.NoBrush)
                     painter.drawEllipse(self.control_points[i], radius, radius)
-                    
+
                     # 为影响力最大的点增加小同心圆
                     if i == max_influence_idx:
                         small_radius = radius * 1.6  # 小圆半径为外径的 50%
@@ -2405,7 +2406,7 @@ class BezierCurveEditor(QWidget):
                             'color': ring_color,
                             'alpha': alpha
                         })
-                
+
                 # 绘制相邻锚点的连线
                 if len(anchor_data) > 1:
                     for j in range(len(anchor_data) - 1):
@@ -2425,10 +2426,10 @@ class BezierCurveEditor(QWidget):
                             (color1.blue() + color2.blue()) // 2
                         )
                         avg_color.setAlphaF((alpha1 + alpha2) / 2)  # 平均透明度
-                        
+
                         # 计算平均粗细
                         avg_thickness = (radius1 + radius2) / 6  # 半径平均值的 1/4
-                        
+
                         # 设置虚线样式
                         painter.setPen(QPen(avg_color, avg_thickness, Qt.DashLine))
                         painter.drawLine(point1, point2)
@@ -2439,10 +2440,10 @@ class BezierCurveEditor(QWidget):
 
         # 设置窗口背景颜色
         painter.fillRect(self.rect(), QColor("#0C0C0C"))
-        
+
         # 绘制左侧面板背景
         painter.fillRect(0, 0, 80, self.height(), QColor("#262626"))
-        
+
         # 不再绘制右侧绘图区域背景，避免覆盖曲线
         painter.fillRect(80, 0, self.width() - 80, self.height(), QColor("#202020"))
 
@@ -2460,8 +2461,8 @@ class BezierCurveEditor(QWidget):
 
             # 使用综合缩放比例缩放图片
             scaled_image = self.image.scaled(
-                int(self.image.width() * combined_scale),  
-                int(self.image.height() * combined_scale), 
+                int(self.image.width() * combined_scale),
+                int(self.image.height() * combined_scale),
                 Qt.KeepAspectRatio,
                 Qt.SmoothTransformation
             )
@@ -2481,7 +2482,7 @@ class BezierCurveEditor(QWidget):
         rect_y_large = center_y - rect_height_large // 2
 
         # **绘制大矩形 (虚线)**
-        rect_color = QColor(64, 64, 69)  
+        rect_color = QColor(64, 64, 69)
         rect_color.setAlpha(170)  # 半透明（50% 透明度）
         pen = QPen(rect_color, 2) # 描边宽度为 2
         pen.setStyle(Qt.DashLine) # 设置为虚线风格 修改点: 设置线条风格为虚线
@@ -2597,7 +2598,7 @@ class BezierCurveEditor(QWidget):
             if i in self.red_anchors:
                 painter.setPen(QPen(QColor("#FF0000"), 4))  # 红色锚点
                 painter.drawEllipse(point, 4, 4)
-                
+
                 # 当Shift按下且鼠标悬停在红锚点上时，显示切线方向
                 if self.is_shift_pressed and i == self.pre_selected_point_index:
                     tangent_dir = self.calculate_tangent_line(i)
@@ -2612,12 +2613,12 @@ class BezierCurveEditor(QWidget):
                         painter.drawLine(QPoint(int(start_x), int(start_y)), QPoint(int(end_x), int(end_y)))
             else:
                 painter.setPen(QPen(QColor("#FFFFFF"), 5))  # 白色锚点
-                
+
                 # 当Shift按下且鼠标悬停在白锚点上时，显示可移动直线
                 if self.is_shift_pressed and i == self.pre_selected_point_index:
                     # 使用统一的函数计算并绘制锚点直线
                     self.calculate_and_draw_anchor_lines(painter, i, point)
-            
+
             painter.drawPoint(point)
             if i == self.pre_selected_point_index:
                 painter.save()  # 保存当前画笔状态
@@ -2628,7 +2629,7 @@ class BezierCurveEditor(QWidget):
                     ring_color = QColor("#FF0000")  # Alt按下时为红色
                 else:
                     ring_color = QColor("#FFFF00")  # 默认为黄色
-                    
+
                 pre_select_ring_pen = QPen(ring_color, 3) # 线宽为 3
                 painter.setPen(pre_select_ring_pen)
                 painter.setBrush(Qt.NoBrush) # 空心圆环
@@ -2663,14 +2664,14 @@ class BezierCurveEditor(QWidget):
 
             # 绘制相邻的前一条线段 (如果存在)
             if highlighted_index > 0:
-                painter.setPen(QPen(adjacent_color, 2, Qt.DashLine)) 
+                painter.setPen(QPen(adjacent_color, 2, Qt.DashLine))
                 start_point_adjacent_prev = self.control_points[highlighted_index - 1]
                 end_point_adjacent_prev = self.control_points[highlighted_index]
                 painter.drawLine(start_point_adjacent_prev, end_point_adjacent_prev)
 
             # 绘制相邻的后一条线段 (如果存在)
             if highlighted_index < len(self.control_points) - 2: # 注意索引范围
-                painter.setPen(QPen(adjacent_color, 2, Qt.DashLine)) 
+                painter.setPen(QPen(adjacent_color, 2, Qt.DashLine))
                 start_point_adjacent_next = self.control_points[highlighted_index + 1]
                 end_point_adjacent_next = self.control_points[highlighted_index + 2]
                 painter.drawLine(start_point_adjacent_next, end_point_adjacent_next)
@@ -2691,7 +2692,7 @@ class BezierCurveEditor(QWidget):
             if self.preview_slider_points and self.is_visualization_enabled:
                 painter.setBrush(Qt.NoBrush)
                 max_offset = max(self.preview_offsets) if self.preview_offsets and any(o > 0 for o in self.preview_offsets) else 1.0
-                
+
                 for i in range(1, len(self.preview_slider_points)):
                     offset = self.preview_offsets[i] if i < len(self.preview_offsets) else self.preview_offsets[-1]
                     # 删除预览时 max_color 为 #FF0000 添加预览时为 #fefd02
@@ -2702,7 +2703,7 @@ class BezierCurveEditor(QWidget):
                     pen.setDashPattern([2, 2])
                     painter.setPen(pen)
                     painter.drawLine(self.preview_slider_points[i - 1], self.preview_slider_points[i])
-                    
+
             if self.preview_segment_index != -1:
                 pen = QPen(QColor("#00FF00" if self.is_ctrl_pressed else "#fefd02"))
                 pen.setStyle(Qt.DashLine)
@@ -2734,7 +2735,7 @@ class BezierCurveEditor(QWidget):
             self.current_slider_length = self.calculate_curve_length()
             ratio = int(self.current_slider_length) / int(self.initial_slider_length)
             length_text = f"{ratio:.2f}x"
-            
+
             # 设置字体和计算文本尺寸
             painter.setFont(QApplication.font())
             metrics = painter.fontMetrics()
@@ -2743,7 +2744,7 @@ class BezierCurveEditor(QWidget):
             value_width = metrics.width(length_text)
             text_height = metrics.height()
             padding = 8
-            
+
             # 计算按钮尺寸和样式
             button_size = 34
             circle_button_style = """
@@ -2761,7 +2762,7 @@ class BezierCurveEditor(QWidget):
                     background-color: #181D28;
                 }
             """
-            
+
             # 创建重设初始长度按钮
             if not hasattr(self, 'reset_length_button'):
                 self.reset_length_button = QPushButton(self)
@@ -2772,7 +2773,7 @@ class BezierCurveEditor(QWidget):
                 icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icons/reset_length.svg")
                 self.reset_length_button.setIcon(QIcon(icon_path))
                 self.reset_length_button.setIconSize(QSize(24, 24))
-            
+
             # 创建缩放到初始长度按钮
             if not hasattr(self, 'scale_to_initial_button'):
                 self.scale_to_initial_button = QPushButton(self)
@@ -2783,7 +2784,7 @@ class BezierCurveEditor(QWidget):
                 icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icons/scale_length.svg")
                 self.scale_to_initial_button.setIcon(QIcon(icon_path))
                 self.scale_to_initial_button.setIconSize(QSize(24, 24))
-            
+
             # 计算背景矩形的尺寸和位置 - 移动到左下角
             rect_x = 90  # 左侧面板宽度为80，稍微偏移一点            
             text_x = rect_x + button_size * 2 + padding * 2  # 文字位置从两个按钮后开始
@@ -2791,21 +2792,21 @@ class BezierCurveEditor(QWidget):
             total_height = max(text_height * 2 + padding * 2, button_size + padding * 2)
 
             rect_y = self.height() - total_height - 10
-            
+
             # 更新按钮位置
             button_y = rect_y + (total_height - button_size) // 2
             self.reset_length_button.move(rect_x + padding, button_y)
             self.scale_to_initial_button.move(rect_x + button_size + padding * 2, button_y)
-            
+
             # 确保按钮可见
             self.reset_length_button.setVisible(True)
             self.scale_to_initial_button.setVisible(True)
-            
+
             # 绘制圆角矩形背景
             painter.setPen(Qt.NoPen)
             painter.setBrush(QColor(30, 30, 30, 150))
             painter.drawRoundedRect(rect_x, rect_y, total_width, total_height, 10, 10)
-            
+
             # 绘制文本 - 左对齐
             painter.setPen(QColor(255, 255, 255))
             painter.drawText(text_x + 9, rect_y + padding + text_height + 4, title_text)
@@ -2817,25 +2818,25 @@ class BezierCurveEditor(QWidget):
         """绘制影响力权重染色（黄色圆圈），支持红色锚点分段"""
         if self.pre_selected_point_index is None:
             return
-            
+
         # 如果所选锚点是第一个、最后一个或红色锚点，不进行权重可视化绘制
-        if (self.pre_selected_point_index == 0 or 
-            self.pre_selected_point_index == len(self.control_points) - 1 or 
+        if (self.pre_selected_point_index == 0 or
+            self.pre_selected_point_index == len(self.control_points) - 1 or
             self.pre_selected_point_index in self.red_anchors):
             return
 
         influence_color = QColor("#FFFF00")
         dragged_point_index = self.pre_selected_point_index
-        
+
         # 初始化变量，避免引用前未定义的错误
         current_segment = None
         current_segment_range = None
         segment_influence_weights = []
-        
+
         # 如果没有红色锚点，按原方式计算影响力权重
         if not self.red_anchors:
             curve_order = len(self.control_points) - 1
-            
+
             # 计算每段影响力权重
             for t in range(0, self.curve_segments):
                 t_start = t / self.curve_segments
@@ -2857,10 +2858,10 @@ class BezierCurveEditor(QWidget):
             start_idx = 0
             segment_ranges = []
             start_point_idx = 0
-            
+
             # 按索引排序红色锚点
             sorted_red_anchors = sorted(self.red_anchors)
-            
+
             # 处理所有分段
             for red_idx in sorted_red_anchors:
                 if red_idx > start_idx:  # 确保有足够的点形成一段
@@ -2871,7 +2872,7 @@ class BezierCurveEditor(QWidget):
                         segment_ranges.append((start_point_idx, start_point_idx + segment_point_count - 1))
                         start_point_idx += segment_point_count - 1  # 减1是因为相邻分段的端点重合
                 start_idx = red_idx
-            
+
             # 处理最后一段（最后一个红色锚点到结束）
             if start_idx < len(self.control_points) - 1:
                 segments.append((start_idx, len(self.control_points) - 1))
@@ -2879,12 +2880,12 @@ class BezierCurveEditor(QWidget):
                 if len(segment_points) >= 2:  # 确保分段至少有两个点
                     segment_point_count = self.curve_segments + 1
                     segment_ranges.append((start_point_idx, start_point_idx + segment_point_count - 1))
-            
+
             # 初始化影响力权重列表，与缓存曲线点数量一致
             total_points = len(self.cached_curve_points) if self.cached_curve_points else self.curve_segments
             for t in range(0, total_points):
                 segment_influence_weights.append({'index': t, 'weight': 0.0})
-            
+
             # 找出拖动点所在的分段
             found_segment = False
             for i, (start, end) in enumerate(segments):
@@ -2894,7 +2895,7 @@ class BezierCurveEditor(QWidget):
                         current_segment_range = segment_ranges[i]
                     found_segment = True
                     break
-            
+
             # 如果找到了拖动点所在的分段，计算该分段的影响力权重
             if found_segment and current_segment and current_segment_range:
                 segment_start, segment_end = current_segment
@@ -2902,33 +2903,33 @@ class BezierCurveEditor(QWidget):
                 segment_points = self.control_points[segment_start:segment_end+1]
                 segment_curve_order = len(segment_points) - 1
                 segment_dragged_index = dragged_point_index - segment_start
-                
+
                 # 只计算当前分段内的曲线点的影响力权重
                 for t in range(0, total_points):
                     # 检查当前点是否在当前分段范围内
                     if range_start <= t <= range_end:
                         local_t = (t - range_start) / (range_end - range_start) if range_end > range_start else 0
-                        
+
                         if segment_dragged_index == 0:
                             t_value_for_weight = local_t * 0.1  # 靠近起点
                         elif segment_dragged_index == len(segment_points) - 1:
                             t_value_for_weight = 0.9 + local_t * 0.1  # 靠近终点
                         else:
                             t_value_for_weight = local_t
-                        
+
                         # 只计算当前分段内的影响力权重
                         if 0 <= segment_dragged_index <= segment_curve_order:
                             influence_weight = self.bernstein_basis_polynomial(segment_curve_order, segment_dragged_index, t_value_for_weight)
                             # 将计算的权重值赋给对应的曲线点
                             segment_influence_weights[t]['weight'] = influence_weight
-        
+
         # 确保segment_influence_weights不为空
         if not segment_influence_weights:
             return
-            
+
         # 找出最大影响力权重，用于归一化
         max_influence_weight = max(segment['weight'] for segment in segment_influence_weights) if segment_influence_weights else 0
-        
+
         # 如果没有有效的影响力权重，直接返回
         if max_influence_weight <= 0:
             return
@@ -2956,7 +2957,7 @@ class BezierCurveEditor(QWidget):
 
                         painter.setBrush(QBrush(influence_color))
                         painter.setPen(Qt.NoPen)
-                        
+
                         # 使用缓存的曲线点
                         point_mid = self.cached_curve_points[t]
                         painter.drawEllipse(point_mid, radius, radius)
@@ -3001,7 +3002,7 @@ class BezierCurveEditor(QWidget):
                 preview_control_points.insert(insert_index, self.preview_point)
                 self.preview_slider_points = []
                 self.preview_offsets = []
-                
+
                 # 如果没有红色锚点，按原方式计算预览曲线
                 if not self.red_anchors:
                     for t in range(0, self.curve_segments + 1):
@@ -3023,24 +3024,24 @@ class BezierCurveEditor(QWidget):
                             preview_red_anchors.add(idx + 1)  # 插入点后的红色锚点索引+1
                         else:
                             preview_red_anchors.add(idx)  # 插入点前的红色锚点索引不变
-                    
+
                     # 首先将控制点按照红色锚点分段
                     segments = []
                     start_idx = 0
-                    
+
                     # 按索引排序红色锚点
                     sorted_red_anchors = sorted(preview_red_anchors)
-                    
+
                     # 处理所有分段
                     for red_idx in sorted_red_anchors:
                         if red_idx > start_idx:  # 确保有足够的点形成一段
                             segments.append(preview_control_points[start_idx:red_idx+1])
                         start_idx = red_idx
-                    
+
                     # 处理最后一段（最后一个红色锚点到结束）
                     if start_idx < len(preview_control_points) - 1:
                         segments.append(preview_control_points[start_idx:])
-                    
+
                     # 为每个分段计算贝塞尔曲线点
                     for segment in segments:
                         if len(segment) >= 2:  # 确保分段至少有两个点
@@ -3050,14 +3051,14 @@ class BezierCurveEditor(QWidget):
                                 t_normalized = t / self.curve_segments
                                 point = self.calculate_bezier_point(t_normalized, segment)
                                 segment_points.append(point)
-                            
+
                             # 如果不是第一段，移除第一个点以避免重复
                             if self.preview_slider_points and segment_points:
                                 segment_points = segment_points[1:]
-                                
+
                             # 将当前分段的点添加到预览曲线中
                             self.preview_slider_points.extend(segment_points)
-                    
+
                     # 计算与原始曲线的偏移量
                     for i, point in enumerate(self.preview_slider_points):
                         if self.cached_curve_points and i < len(self.cached_curve_points):
@@ -3079,7 +3080,7 @@ class BezierCurveEditor(QWidget):
             min_distance = float('inf')
             insert_segment_index = -1
             distance_threshold = self.rect_height_large * 0.11 if self.rect_height_large > 0 else 50
-            
+
             for i in range(len(self.control_points) - 1):
                 start_point = self.control_points[i]
                 end_point = self.control_points[i + 1]
@@ -3094,9 +3095,9 @@ class BezierCurveEditor(QWidget):
                 self.preview_point = None
                 self.is_preview_enabled = True
                 self.preview_segment_index = -1
-                
+
                 preview_control_points = self.control_points[:]
-                
+
                 # 更新红色锚点索引，考虑删除点后的索引变化
                 preview_red_anchors = set()
                 for idx in self.red_anchors:
@@ -3109,13 +3110,13 @@ class BezierCurveEditor(QWidget):
                     else:
                         # 删除点前的红色锚点索引不变
                         preview_red_anchors.add(idx)
-                
+
                 # 删除预选锚点
                 preview_control_points.pop(self.pre_selected_point_index)
-                
+
                 self.preview_slider_points = []
                 self.preview_offsets = []
-                
+
                 # 如果没有红色锚点，按原方式计算预览曲线
                 if not preview_red_anchors:
                     for t in range(0, self.curve_segments + 1):
@@ -3133,20 +3134,20 @@ class BezierCurveEditor(QWidget):
                     # 首先将控制点按照红色锚点分段
                     segments = []
                     start_idx = 0
-                    
+
                     # 按索引排序红色锚点
                     sorted_red_anchors = sorted(preview_red_anchors)
-                    
+
                     # 处理所有分段
                     for red_idx in sorted_red_anchors:
                         if red_idx > start_idx:  # 确保有足够的点形成一段
                             segments.append(preview_control_points[start_idx:red_idx+1])
                         start_idx = red_idx
-                    
+
                     # 处理最后一段（最后一个红色锚点到结束）
                     if start_idx < len(preview_control_points) - 1:
                         segments.append(preview_control_points[start_idx:])
-                    
+
                     # 为每个分段计算贝塞尔曲线点
                     for segment in segments:
                         if len(segment) >= 2:  # 确保分段至少有两个点
@@ -3156,14 +3157,14 @@ class BezierCurveEditor(QWidget):
                                 t_normalized = t / self.curve_segments
                                 point = self.calculate_bezier_point(t_normalized, segment)
                                 segment_points.append(point)
-                            
+
                             # 如果不是第一段，移除第一个点以避免重复
                             if self.preview_slider_points and segment_points:
                                 segment_points = segment_points[1:]
-                                
+
                             # 将当前分段的点添加到预览曲线中
                             self.preview_slider_points.extend(segment_points)
-                    
+
                     # 计算与原始曲线的偏移量
                     for i, point in enumerate(self.preview_slider_points):
                         if self.cached_curve_points and i < len(self.cached_curve_points):
@@ -3178,12 +3179,12 @@ class BezierCurveEditor(QWidget):
                 self.preview_point = event.pos()
                 self.is_preview_enabled = True
                 self.preview_segment_index = insert_segment_index + 1
-                
+
                 preview_control_points = self.control_points[:]
                 preview_control_points.insert(self.preview_segment_index, self.preview_point)
                 self.preview_slider_points = []
                 self.preview_offsets = []
-                
+
                 # 如果没有红色锚点，按原方式计算预览曲线
                 if not self.red_anchors:
                     for t in range(0, self.curve_segments + 1):
@@ -3204,25 +3205,25 @@ class BezierCurveEditor(QWidget):
                             preview_red_anchors.add(idx + 1)  # 插入点后的红色锚点索引+1
                         else:
                             preview_red_anchors.add(idx)  # 插入点前的红色锚点索引不变
-                    
+
                     # 按照红色锚点分段计算预览曲线
                     # 首先将控制点按照红色锚点分段
                     segments = []
                     start_idx = 0
-                    
+
                     # 按索引排序红色锚点
                     sorted_red_anchors = sorted(preview_red_anchors)
-                    
+
                     # 处理所有分段
                     for red_idx in sorted_red_anchors:
                         if red_idx > start_idx:  # 确保有足够的点形成一段
                             segments.append(preview_control_points[start_idx:red_idx+1])
                         start_idx = red_idx
-                    
+
                     # 处理最后一段（最后一个红色锚点到结束）
                     if start_idx < len(preview_control_points) - 1:
                         segments.append(preview_control_points[start_idx:])
-                    
+
                     # 为每个分段计算贝塞尔曲线点
                     for segment in segments:
                         if len(segment) >= 2:  # 确保分段至少有两个点
@@ -3232,14 +3233,14 @@ class BezierCurveEditor(QWidget):
                                 t_normalized = t / self.curve_segments
                                 point = self.calculate_bezier_point(t_normalized, segment)
                                 segment_points.append(point)
-                            
+
                             # 如果不是第一段，移除第一个点以避免重复
                             if self.preview_slider_points and segment_points:
                                 segment_points = segment_points[1:]
-                                
+
                             # 将当前分段的点添加到预览曲线中
                             self.preview_slider_points.extend(segment_points)
-                    
+
                     # 计算与原始曲线的偏移量
                     for i, point in enumerate(self.preview_slider_points):
                         if self.cached_curve_points and i < len(self.cached_curve_points):
@@ -3286,7 +3287,7 @@ class BezierCurveEditor(QWidget):
         """计算指定锚点处的切线方向向量"""
         if point_idx < 0 or point_idx >= len(self.control_points):
             return None
-        
+
         # 如果是端点，使用相邻点确定方向
         if point_idx == 0:
             if len(self.control_points) > 1:
@@ -3304,22 +3305,22 @@ class BezierCurveEditor(QWidget):
             # 对于中间点，使用前后点确定切线方向
             dx = self.control_points[point_idx + 1].x() - self.control_points[point_idx - 1].x()
             dy = self.control_points[point_idx + 1].y() - self.control_points[point_idx - 1].y()
-        
+
         # 归一化方向向量
         length = math.sqrt(dx * dx + dy * dy)
         if length > 0:
             return dx/length, dy/length
         return None
-        
+
     def calculate_direction_vector(self, from_idx, to_idx):
         """计算从from_idx到to_idx的方向向量"""
         if from_idx < 0 or from_idx >= len(self.control_points) or to_idx < 0 or to_idx >= len(self.control_points):
             return None
-            
+
         # 计算方向向量
         dx = self.control_points[to_idx].x() - self.control_points[from_idx].x()
         dy = self.control_points[to_idx].y() - self.control_points[from_idx].y()
-        
+
         # 归一化方向向量
         length = math.sqrt(dx * dx + dy * dy)
         if length > 0:
@@ -3333,20 +3334,20 @@ class BezierCurveEditor(QWidget):
         line_direction: 直线的方向向量(已归一化)"""
         if not line_direction:
             return None
-        
+
         # 计算点到直线上点的向量
         dx = point.x() - line_point.x()
         dy = point.y() - line_point.y()
-        
+
         # 计算投影长度
         proj_length = dx * line_direction[0] + dy * line_direction[1]
-        
+
         # 计算投影点坐标
         proj_x = line_point.x() + proj_length * line_direction[0]
         proj_y = line_point.y() + proj_length * line_direction[1]
-        
+
         return QPoint(int(proj_x), int(proj_y))
-        
+
     def calculate_and_draw_anchor_lines(self, painter, anchor_idx, anchor_point):
         """计算并绘制锚点可移动的直线
         painter: QPainter对象
@@ -3355,41 +3356,41 @@ class BezierCurveEditor(QWidget):
         # 检查前后是否有红色锚点
         prev_red_idx = None
         next_red_idx = None
-        
+
         # 仅检查相邻的前一个点是否为红锚点
         if anchor_idx > 0 and (anchor_idx - 1) in self.red_anchors:
             prev_red_idx = anchor_idx - 1
-            
+
         # 仅检查相邻的后一个点是否为红锚点
         if anchor_idx < len(self.control_points) - 1 and (anchor_idx + 1) in self.red_anchors:
             next_red_idx = anchor_idx + 1
-        
+
         # 如果前后都有红色锚点
         if prev_red_idx is not None and next_red_idx is not None:
             # 计算N-2到N-1和N+2到N+1的直线方向向量
             prev_dir = None
             next_dir = None
-            
+
             # 计算前一条直线方向向量 (N-2到N-1)
             if prev_red_idx > 0:  # 确保N-2存在
                 prev_dir = self.calculate_direction_vector(prev_red_idx-1, prev_red_idx)
             else:
                 # 如果N-2不存在，使用N-1的切线方向
                 prev_dir = self.calculate_tangent_line(prev_red_idx)
-                
+
             # 计算后一条直线方向向量 (N+2到N+1)
             if next_red_idx < len(self.control_points) - 1:  # 确保N+2存在
                 next_dir = self.calculate_direction_vector(next_red_idx+1, next_red_idx)
             else:
                 # 如果N+2不存在，使用N+1的切线方向
                 next_dir = self.calculate_tangent_line(next_red_idx)
-            
+
             if prev_dir and next_dir:
                 # 计算两个方向向量的夹角（弧度）
                 dot_product = prev_dir[0] * next_dir[0] + prev_dir[1] * next_dir[1]
                 angle_rad = math.acos(max(-1.0, min(1.0, dot_product)))
                 angle_deg = math.degrees(angle_rad)
-                
+
                 # 如果夹角大于30度，绘制两条直线的交点
                 if angle_deg > 30:
                     # 计算两条直线的交点
@@ -3399,47 +3400,47 @@ class BezierCurveEditor(QWidget):
                         self.control_points[next_red_idx],
                         next_dir
                     )
-                    
+
                     if intersection:
                         # 绘制从N-1点到焦点的直线
                         painter.setPen(QPen(QColor("#00FF00"), 2, Qt.DashLine))  # 绿色虚线
                         painter.drawLine(self.control_points[prev_red_idx], intersection)
-                        
+
                         # 绘制从N+1点到焦点的直线
                         painter.setPen(QPen(QColor("#00FF00"), 2, Qt.DashLine))  # 绿色虚线
                         painter.drawLine(self.control_points[next_red_idx], intersection)
-                        
+
                         # 绘制交点（小圆点）
                         painter.setPen(QPen(QColor("#00FF00"), 7))  # 绿色点
                         painter.drawPoint(intersection)
                 # 如果夹角小于等于30度，不绘制任何内容
                 # else:
                 #     # 这里不再绘制任何内容
-        
+
         # 如果只有一个相邻的红色锚点
         elif prev_red_idx is not None or next_red_idx is not None:
             red_idx = prev_red_idx if prev_red_idx is not None else next_red_idx
             red_point = self.control_points[red_idx]
-            
+
             # 计算从红色锚点到当前锚点的方向向量
             dx = anchor_point.x() - red_point.x()
             dy = anchor_point.y() - red_point.y()
             length = math.sqrt(dx * dx + dy * dy)
-            
+
             if length > 0:
                 # 归一化方向向量
                 dir_vector = (dx/length, dy/length)
-                
+
                 # 计算足够长的直线长度（窗口对角线长度的2倍）
                 window_diagonal = math.sqrt(self.width() * self.width() + self.height() * self.height())
                 line_length = window_diagonal * 2
-                
+
                 # 计算直线的起点和终点
                 start_x = anchor_point.x() - dir_vector[0] * line_length
                 start_y = anchor_point.y() - dir_vector[1] * line_length
                 end_x = anchor_point.x() + dir_vector[0] * line_length
                 end_y = anchor_point.y() + dir_vector[1] * line_length
-                
+
                 # 绘制直线
                 painter.setPen(QPen(QColor("#00FF00"), 2, Qt.DashLine))  # 绿色虚线
                 painter.drawLine(QPoint(int(start_x), int(start_y)), QPoint(int(end_x), int(end_y)))
@@ -3450,7 +3451,7 @@ class BezierCurveEditor(QWidget):
         dir1, dir2: 两条直线的方向向量(已归一化)"""
         if not dir1 or not dir2:
             return None
-            
+
         # 计算两个方向向量的点积，用于判断夹角
         dot_product = dir1[0]*dir2[0] + dir1[1]*dir2[1]
         # 计算夹角的余弦值，两向量都已归一化，所以点积就是余弦值
@@ -3458,21 +3459,21 @@ class BezierCurveEditor(QWidget):
         # 当夹角小于30度时（cos值大于0.866），认为两线几乎平行，避免计算不稳定
         if cos_angle > 0.866:  # cos(30°) ≈ 0.866
             return None
-            
+
         # 使用参数方程求解
         # L1: p1 + t*dir1 = L2: p2 + s*dir2
         denominator = dir1[0]*dir2[1] - dir1[1]*dir2[0]
         if abs(denominator) < 1e-10:  # 平行或重合
             return None
-            
+
         dx = p2.x() - p1.x()
         dy = p2.y() - p1.y()
         t = (dx*dir2[1] - dy*dir2[0]) / denominator
-        
+
         # 计算交点
         intersect_x = p1.x() + t * dir1[0]
         intersect_y = p1.y() + t * dir1[1]
-        
+
         return QPoint(int(intersect_x), int(intersect_y))
 
     def binomial_coefficient(self, n, k):
@@ -3496,7 +3497,7 @@ class BezierCurveEditor(QWidget):
         red_anchors_to_save = copy.deepcopy(self.red_anchors)  # 保存红色锚点信息
         self.history.append((state_to_save, red_anchors_to_save))  # 保存为元组
         self.future.clear()
-        
+
         self.backup_counter += 1 # 更新计数器并检查是否备份
         if self.backup_counter >= self.backup_threshold:
             self.auto_backup()
@@ -3587,7 +3588,7 @@ class BezierCurveEditor(QWidget):
                         print(f"Failed to remove temporary SVG file {filename}: {e}")
         except Exception as e:
             print(f"Error cleaning temporary SVG files: {e}")
-            
+
     def import_image(self):
         """导入图片"""
         file_name, _ = QFileDialog.getOpenFileName(self, "Open Image", "", "Image Files (*.png *.jpg *.bmp)")
@@ -3701,7 +3702,7 @@ class BezierCurveEditor(QWidget):
                         rect_top_right_current_x, rect_top_right_current_y
                     )
                     file.write(f"|{int(remapped_point.x())}:{int(remapped_point.y())}")
-                    
+
                     # 如果是红锚点，则重复输出该点坐标
                     if i-1 in self.red_anchors:  # i-1是因为self.control_points[1:]从索引1开始，但red_anchors中的索引从0开始
                         file.write(f"|{int(remapped_point.x())}:{int(remapped_point.y())}")
@@ -3743,7 +3744,7 @@ class BezierCurveEditor(QWidget):
         self.control_points = []
         self.red_anchors = set()
         self.allow_save2osu = False
-        
+
         if file_name:
             try:
                 with open(file_name, "r") as file:
@@ -3783,7 +3784,7 @@ class BezierCurveEditor(QWidget):
                         for i, point in enumerate(slider_points):
                             x, y = point.split(":")
                             current_point = QPoint(int(x), int(y))
-                            
+
                             # 检查是否与前一个点坐标相同（红锚点标记）
                             if prev_point is not None and prev_point.x() == current_point.x() and prev_point.y() == current_point.y():
                                 # 如果与前一个点坐标相同，则跳过此点（因为已经添加过了）
@@ -3791,7 +3792,7 @@ class BezierCurveEditor(QWidget):
                                 self.red_anchors.add(len(self.control_points) + len(remapped_slider_points) - 1)
                                 prev_point = None # 重置前一个点，避免连续三个相同点的情况
                                 continue
-                            
+
                             # 正常处理点坐标
                             new_point_remapped = self.remap_coordinates( # 调用 remap_coordinates 进行反向映射
                                 current_point,
@@ -3806,7 +3807,7 @@ class BezierCurveEditor(QWidget):
                         self.save_state()
                         self.update_curve_cache()  # 刷新缓存
                         self.update()
-                        
+
                         # 成功提示
                         # QMessageBox.information(self, self.msg_title_prompt, self.msg_slider_import_success.format(file_name=file_name))
                     else:
@@ -3892,6 +3893,8 @@ class BezierCurveEditor(QWidget):
         return int(osu_x), int(osu_y)  # 必须转换回整数，否则 osu! 解析会失败
 
 if __name__ == "__main__":
+    QtCore.QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling)  # 适应windows缩放
+    QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)  # 设置支持小数放大比例（适应如125%的缩放比）
     app = QApplication(sys.argv)
     window = BezierCurveEditor()
     window.show()
