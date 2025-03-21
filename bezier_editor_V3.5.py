@@ -1175,7 +1175,8 @@ class BezierCurveEditor(QWidget):
         self.undo_button.move(start_x + 10, button_y)
         self.undo_button.clicked.connect(self.undo)
         self.undo_button.setToolTip(self.button_text_undo)
-        self.undo_button.setIcon(QIcon("icons/undo.svg"))
+        icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icons/undo.svg")
+        self.undo_button.setIcon(QIcon(icon_path))
         self.undo_button.setIconSize(QSize(24, 24))
         
         # 创建重做按钮
@@ -1184,7 +1185,8 @@ class BezierCurveEditor(QWidget):
         self.redo_button.move(start_x + 10 + button_spacing, button_y)
         self.redo_button.clicked.connect(self.redo)
         self.redo_button.setToolTip(self.button_text_redo)
-        self.redo_button.setIcon(QIcon("icons/redo.svg"))
+        icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icons/redo.svg")
+        self.redo_button.setIcon(QIcon(icon_path))
         self.redo_button.setIconSize(QSize(24, 24))
         
         # 创建清空画布按钮
@@ -1193,7 +1195,8 @@ class BezierCurveEditor(QWidget):
         self.clear_button.move(start_x + 10 + button_spacing * 2, button_y)
         self.clear_button.clicked.connect(self.restart_program)
         self.clear_button.setToolTip(self.button_text_clear_canvas)
-        self.clear_button.setIcon(QIcon("icons/clear.svg"))
+        icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icons/clear.svg")
+        self.clear_button.setIcon(QIcon(icon_path))
         self.clear_button.setIconSize(QSize(24, 24))
         
         # 设置面板大小和位置
@@ -2766,7 +2769,8 @@ class BezierCurveEditor(QWidget):
                 self.reset_length_button.setFixedSize(button_size, button_size)
                 self.reset_length_button.clicked.connect(self.reset_initial_length)
                 self.reset_length_button.setToolTip("重设初始长度")
-                self.reset_length_button.setIcon(QIcon("icons/reset_length.svg"))
+                icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icons/reset_length.svg")
+                self.reset_length_button.setIcon(QIcon(icon_path))
                 self.reset_length_button.setIconSize(QSize(24, 24))
             
             # 创建缩放到初始长度按钮
@@ -2776,7 +2780,8 @@ class BezierCurveEditor(QWidget):
                 self.scale_to_initial_button.setFixedSize(button_size, button_size)
                 self.scale_to_initial_button.clicked.connect(self.scale_to_initial_length)
                 self.scale_to_initial_button.setToolTip("缩放至初始长度")
-                self.scale_to_initial_button.setIcon(QIcon("icons/scale_length.svg"))
+                icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icons/scale_length.svg")
+                self.scale_to_initial_button.setIcon(QIcon(icon_path))
                 self.scale_to_initial_button.setIconSize(QSize(24, 24))
             
             # 计算背景矩形的尺寸和位置 - 移动到左下角
