@@ -41,6 +41,7 @@ class HoverButton(QPushButton):
         super(HoverButton, self).leaveEvent(event)
 from PyQt5.QtGui import QPainter, QPainterPath, QColor, QPen, QPixmap, QBrush, QVector2D, QIcon
 from PyQt5.QtCore import Qt, QPoint, QLocale, QLineF, QPropertyAnimation, QSize
+from PyQt5 import QtGui,QtCore
 import sys
 import math
 import pickle
@@ -3892,6 +3893,8 @@ class BezierCurveEditor(QWidget):
         return int(osu_x), int(osu_y)  # 必须转换回整数，否则 osu! 解析会失败
 
 if __name__ == "__main__":
+    QtCore.QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling)  # 适应windows缩放
+    QtGui.QGuiApplication.setAttribute(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)  # 设置支持小数放大比例（适应如125%的缩放比）
     app = QApplication(sys.argv)
     window = BezierCurveEditor()
     window.show()
