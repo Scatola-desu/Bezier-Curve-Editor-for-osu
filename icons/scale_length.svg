@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_1" data-name="图层_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 24 24">
+  <!-- Generator: Adobe Illustrator 29.3.1, SVG Export Plug-In . SVG Version: 2.1.0 Build 151)  -->
+  <defs>
+    <style>
+      .st0 {
+        stroke-dasharray: 4.2 4.2;
+      }
+
+      .st0, .st1 {
+        fill: none;
+        stroke: #fff;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>
+  <g>
+    <polyline class="st1" points="20.8 18.3 20.8 20.8 18.3 20.8"/>
+    <line class="st0" x1="14.1" y1="20.8" x2="7.8" y2="20.8"/>
+    <polyline class="st1" points="5.7 20.8 3.2 20.8 3.2 18.3"/>
+    <line class="st0" x1="3.2" y1="14.1" x2="3.2" y2="7.8"/>
+    <polyline class="st1" points="3.2 5.7 3.2 3.2 5.7 3.2"/>
+    <line class="st0" x1="9.9" y1="3.2" x2="16.2" y2="3.2"/>
+    <polyline class="st1" points="18.3 3.2 20.8 3.2 20.8 5.7"/>
+    <line class="st0" x1="20.8" y1="9.9" x2="20.8" y2="16.2"/>
+  </g>
+  <polyline class="st1" points="13.5 7.4 13.5 10.6 16.7 10.6"/>
+  <line class="st1" x1="17.4" y1="6.7" x2="13.5" y2="10.6"/>
+  <rect class="st1" x="3.2" y="12.9" width="7.9" height="7.9"/>
+</svg>
