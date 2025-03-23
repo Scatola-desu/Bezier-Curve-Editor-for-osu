@@ -96,3 +96,6 @@ v2.8
 
 ![预览图](https://github.com/Scatola-desu/Bezier-Curve-Editor-for-osu-/blob/main/images/v2.4.png)  
 v2.4
+
+Used libraries:
+https://github.com/Karoo13/EditorReader
